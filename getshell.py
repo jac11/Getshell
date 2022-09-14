@@ -238,7 +238,7 @@ class Reverse_Shell_Generator:
             parser.add_argument("-C32","--compile32"     , action='store_true'                        ,help   ="compile C code to exe executable 32 bit ")
             parser.add_argument("--info"                 , action='store_true'                        ,help   ="print all support type of  the rverseshell ")
             parser.add_argument("-F","--onefile"         , action='store_true'                        ,help   ="genetate python script revelshell  ")
-            parser.add_argument("-UD","--urlencode"      , action='store_true'                        ,help   ="encode url format ")
+            parser.add_argument("-UE","--urlencode"      , action='store_true'                        ,help   ="encode url format ")
             self.args = parser.parse_args()         
             if len(sys.argv)!=1 :
                pass
@@ -258,7 +258,7 @@ class Reverse_Shell_Generator:
                       self.result = base64.b64encode(self.result)
                       self.result = str(self.result).replace("b'",'',1).replace("'",'')
                       print('[*] TYPE    : '+self.args.type +'\n' +'[*] LHOST   : ' +self.args.LHOST+'\n'\
-                       +'[*] LPORT   : ' +self.args.LHOST+'\n'+'[*] Encode  : Base64'+'\n'+'='*30 +'\n')
+                       +'[*] LPORT   : ' +self.args.LPORT+'\n'+'[*] Encode  : Base64'+'\n'+'='*30 +'\n')
                       print(self.result)
              elif self.args.urlencode :
                   self.URL_encode()       
