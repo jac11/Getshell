@@ -9,7 +9,23 @@ import os
 import base64
 import binascii
 import urllib.parse
+banner = '''
 
+            _.-'|''-._
+        .-'     | S    `-.
+      .'\    G  | H     /`.
+    .'   \   E  | E    /   `.
+    \     \  T  | L   /     /
+     `\    \    | L  /    /'
+       `\   \   |   /   /'
+         `\  \  |  /  /'
+        _.-`\ \ | / /'-._
+       {_____  \|//'_____}
+            jacstory
+               
+'''
+       
+print (banner)
 class Reverse_Shell_Generator:
         def __init__(self):
             self.control()
@@ -198,15 +214,20 @@ class Reverse_Shell_Generator:
              if self.args.base64 :
                   if 'powershell' in self.args.type:
                        self.result = 'powershell -e "'+ base64.b64encode(self.result.encode('utf-16')[2:]).decode()+'"'
+                       self.result = urllib.parse.quote(self.result)
+                       print('[*] TYPE    : '+self.args.type +'\n' +'[*] LHOST   : ' +self.args.LHOST\
+                       +'\n' +'[*] LPORT   : ' +self.args.LPORT+'\n'+'[*] Encode  : Base64'+'\n'+'='*30 +'\n')
                        print(self.result)
                   else:
                       self.result = bytes(self.result.encode())
                       self.result = base64.b64encode(self.result)
                       self.result = str(self.result).replace("b'",'',1).replace("'",'')
+                      print('[*] TYPE    : '+self.args.type +'\n' +'[*] LHOST   : ' +self.args.LHOST+'\n' +'[*] LPORT   : ' +self.args.LHOST+'\n'+'[*] Encode  : Base64'+'\n'+'='*30 +'\n')
                       print(self.result)
              elif self.args.urlencode :
                   self.URL_encode()       
              else:
+                  print('[*] TYPE      : '+self.args.type +'\n' +'[*] LHOST     : ' +self.args.LHOST+'\n' +'[*] LPORT     : ' +self.args.LPORT+'\n'+'='*30 +'\n')
                   print(self.result)
              if self.args.output:
                 with open("./Store_shell/"+self.args.type+".txt",'w') as File_write :
@@ -214,12 +235,12 @@ class Reverse_Shell_Generator:
         def URL_encode (self):
             if self.args.urlencode :
                  self.result = urllib.parse.quote(self.result)
+                 print('[*] TYPE      : '+self.args.type +'\n' +'[*] LHOST     : ' +self.args.LHOST+'\n' +'[*] LPORT     : ' +self.args.LPORT+'\n'+'[*] Encode    : Urlencode'+'\n'+'='*30 +'\n')
                  print(self.result)
             if self.args.output:
                 with open("./Store_shell/"+self.args.type+".txt",'w') as File_write :
                      File_write.write(self.result)           
 if __name__=='__main__':
    Reverse_Shell_Generator()  
-
 
 
