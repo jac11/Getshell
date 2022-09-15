@@ -1,7 +1,18 @@
+
+
+
 # Getshell
-* Get shell is  generator reverseshell  help you to get reverseshell
-*  have opetion to convert to exe and also encode base64 and url encode 
-To gain control over a compromised system, an attacker usually aims to gain interactive shell access for arbitrary command execution. With such access, they can try to elevate their privileges to obtain full control of the operating .
+-----------------------------------------
+### what is reverseshell
+--------------------------------
+The reverse shell (reverse shell) - also called reverse tunnel (reverse tunnel) - is a computer technique which makes it possible to redirect on a local computer the entry and the exit of a shell towards a remote computer, through a service able to interact between the two computers. One of the advantages of this technique is to make a local shell accessible from this remote server without being blocked by a firewall1.
+### Getshell
+--------------------------------
+* Get shell is   reverseshell generator 
+*  have opetion to convert to exe
+*  also encode base64 and url encode 
+*  generate PHP reverseshell "pentestmonkey"
+
 ### Support types of reverseshell :-
 ------------------------------------------------
 * Spport type  is :  python
@@ -53,6 +64,11 @@ To gain control over a compromised system, an attacker usually aims to gain inte
 * after insatll mingw-w64 you can compile to exe as
 ``` 
 ./getshell.py -t exe -i 10.195.100.22 -p 4444 
+```
+###  generate PHP reverseshell "pentestmonkey"
+--------------------------------------------------
+```
+./getshell.py -t php -i 10.195.100.33 -p 5555 -M
 ```
 ### python file :
 ----------------------------------
