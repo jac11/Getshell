@@ -1,5 +1,6 @@
 # Getshell
-* Get shell is  generator reverseshell  help you to gett reverseshell have opetion to convert to exe and also encode base64 and url encode 
+* Get shell is  generator reverseshell  help you to get reverseshell
+*  have opetion to convert to exe and also encode base64 and url encode 
 To gain control over a compromised system, an attacker usually aims to gain interactive shell access for arbitrary command execution. With such access, they can try to elevate their privileges to obtain full control of the operating .
 ### Support types of reverseshell :-
 ------------------------------------------------
