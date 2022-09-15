@@ -21,7 +21,7 @@ To gain control over a compromised system, an attacker usually aims to gain inte
 * chmod 755 getshell.py
 ### Command :
 ---------------------------------
-* to chech types reverseshell suport
+* to check types reverseshell suport
 ````
 ./getshell.py --info
 ````
