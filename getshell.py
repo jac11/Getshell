@@ -205,8 +205,8 @@ class Reverse_Shell_Generator:
                   print('[+] File Path  : ' +path+'/')         
             elif 'python' in self.args.type and  not self.args.windows  and self.args.onefile :
                    
-                  if os.path.exists("./Store_shell/pyshellLinux.txt"):
-                     os.remove("./Store_shell/pyshellLinux.txt")
+                  if os.path.exists("./Store_shell/pyshellLinux.py"):
+                     os.remove("./Store_shell/pyshellLinux.py")
                   else:
                        pass
                   Orgenal_Host = "LHOST = ''"
