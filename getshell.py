@@ -228,17 +228,17 @@ class Reverse_Shell_Generator:
                            
         def control(self):    
             parser = argparse.ArgumentParser(description="Usage: [OPtion] [arguments] [ -w ] [arguments]")      
-            parser.add_argument("-t",'--type'            , metavar='' , action=None  ,required = True ,help   ="type of payload ") 
-            parser.add_argument("-i","--LHOST"           , metavar='' , action=None  ,required = True ,help   ="listner ip ' Local Host'") 
-            parser.add_argument("-p","--LPORT"           , metavar='' , action=None  ,required = True ,help   ="Listner port ")   
-            parser.add_argument("-o","--output"          , action='store_true'                        ,help   ="save the payload into the file")      
-            parser.add_argument("-B64","--base64"        , action='store_true'                        ,help   ="encode the payload to base64 encode ")  
-            parser.add_argument("-M","--pentestmonkey"   , action='store_true'                        ,help   ="genteate php pentestmonkey payload file ") 
-            parser.add_argument("-W","--windows"         , action='store_true'                        ,help   ="gentate reverseshell  for windows operating system ")
-            parser.add_argument("-C32","--compile32"     , action='store_true'                        ,help   ="compile C code to exe executable 32 bit ")
-            parser.add_argument("--info"                 , action='store_true'                        ,help   ="print all support type of  the rverseshell ")
-            parser.add_argument("-F","--onefile"         , action='store_true'                        ,help   ="genetate python script revelshell  ")
-            parser.add_argument("-UE","--urlencode"      , action='store_true'                        ,help   ="encode url format ")
+            parser.add_argument("-T",'--type'            , metavar='' , action=None  ,required = True ,help ="type of payload ") 
+            parser.add_argument("-L","--LHOST"           , metavar='' , action=None  ,required = True ,help ="listner ip ' Local Host'") 
+            parser.add_argument("-P","--LPORT"           , metavar='' , action=None  ,required = True ,help ="Listner port ")   
+            parser.add_argument("-o","--output"          , action='store_true'                        ,help ="save the payload into the file")      
+            parser.add_argument("-B64","--base64"        , action='store_true'                        ,help ="encode the payload to base64 encode ")  
+            parser.add_argument("-M","--pentestmonkey"   , action='store_true'                        ,help ="genteate php pentestmonkey payload file ") 
+            parser.add_argument("-W","--windows"         , action='store_true'                        ,help ="gentate reverseshell  for windows operating system ")
+            parser.add_argument("-C32","--compile32"     , action='store_true'                        ,help ="compile C code to exe executable 32 bit ")
+            parser.add_argument("-info"                  , action='store_true'                        ,help ="print all support type of  the rverseshell ")
+            parser.add_argument("-F","--onefile"         , action='store_true'                        ,help ="genetate python script revelshell  ")
+            parser.add_argument("-UE","--urlencode"      , action='store_true'                        ,help ="encode url format ")
             self.args = parser.parse_args()         
             if len(sys.argv)!=1 :
                pass
