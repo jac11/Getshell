@@ -2,7 +2,6 @@
 import os
 import socket
 import subprocess 
-import threading
 
 LHOST = ''
 LPORT = 0
