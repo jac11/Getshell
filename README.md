@@ -28,9 +28,21 @@ The reverse shell (reverse shell) - also called reverse tunnel (reverse tunnel) 
 * git clone https://github.com/jac11/GetShell.git
 * cd GetShell
 * chmod 755 getshell.py
+-----------------------------------------------------------------
+
 ### Command :
 ---------------------------------
-* to check types reverseshell suport
+*  to check types reverseshell supoOptions
+*    -T, --type : Type of payload (e.g., python, bash, perl, php, ruby, netcat, xterm, java, powershell, js, exe, nc)
+*   -L, --LHOST : Local host IP address
+*    -P, --LPORT : Local port number
+*    -o, --output : Save the payload to a file
+*   -B, --base64 : Encode the payload to Base64
+*    -M, --pentestmonkey : Generate PHP Pentest Monkey payload file
+*   -W, --windows : Generate reverse shell for Windows operating system
+*    -I, --info : Print all supported reverse shell types
+*    -F, --onefile : Generate Python script reverse shell
+*    -U, --urlencode : Encode payload in URL format
 ````
 ./getshell.py --info
 ````
