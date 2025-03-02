@@ -331,9 +331,7 @@ class Reverse_Shell_Generator:
         def Upgrade_shell(self):
             Fprint = ""
             Fprint +="""[+] python3 -c 'import pty;pty.spawn("/bin/bash")'\n"""
-            Fprint +="[+] stty rows\n"
             Fprint +="[+] stty raw -echo;fg\n"
-            Fprint +="[+] xterm\n"
             Fprint +="[+] export TERM=xterm\n"
             Fprint +="[+] stty rows 19 columns 125\n"                 
             
