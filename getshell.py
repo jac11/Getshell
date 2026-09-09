@@ -247,8 +247,8 @@ class Reverse_Shell_Generator:
             parser.add_argument("-I","--info"            , action='store_true'                        ,help ="print all support type of  the rverseshell ")
             parser.add_argument("-F","--onefile"         , action='store_true'                        ,help ="genetate python script revelshell  ")
             parser.add_argument("-U","--urlencode"       , action='store_true'                        ,help ="encode url format ")
-            parser.add_argument("--pickle", action='store_true',help="Data code url code ")
-            parser.add_argument("--QR", action ='store_true',help="paylaod QRcode Format")
+            parser.add_argument("-p","--pickle", action='store_true',help="Serialize the generated payload using Python Pickle")
+            parser.add_argument("-Q","--QR", action ='store_true',help="Generate a QR code from the generated payload")
             self.args = parser.parse_args()         
             if len(sys.argv)!=1 :
                pass
